@@ -1,6 +1,7 @@
 <?php
 
     require_once "src/Student.php";
+    require_once "src/Course.php";
 
     /**
     * @backupGlobals disabled
@@ -17,7 +18,7 @@
         protected function tearDown()
         {
             Student::deleteAll();
-            //Course::deleteAll();
+            Course::deleteAll();
         }
 
         function testGetName()
@@ -184,7 +185,74 @@
             $this->assertEquals("2015-02-12", $test_student->getDateOfEnrollment());
         }
 
+        function test_find()
+        {
+            //Arrange
+            $name = "Jack";
+            $date_of_enrollment = "2012-02-12";
+            $name2 = "Billy";
+            $date_of_enrollment2 = "2011-04-14";
+            $id = 1;
+            $id2 = 2;
+            $test_student = new Student($name, $date_of_enrollment, $id);
+            $test_student->save();
+            $test_student2 = new Student($name2, $date_of_enrollment2, $id2);
+            $test_student2->save();
 
+            //Act
+            $result = Student::find($test_student->getId());
+
+            //Assert
+            $this->assertEquals($test_student, $result);
+        }
+
+        function test_addCourse()
+        {
+            //Arrange
+            $name = "bob";
+            $date_of_enrollment = "2015-09-16";
+            $test_student = new Student($name, $date_of_enrollment);
+            $test_student->save();
+
+            $name2 = "Psychology 101";
+            $course_number = "PSY101";
+            $test_course = new Course($name2, $course_number);
+            $test_course->save();
+
+            //Act
+            $test_student->addCourse($test_course->getId());
+
+            //Assert
+            $result = $test_student->getCourses();
+            $this->assertEquals([$test_course], $result);
+        }
+
+        function test_getCourse()
+        {
+            //Arrange
+            $name = "bob";
+            $date_of_enrollment = "2015-09-16";
+            $test_student = new Student($name, $date_of_enrollment);
+            $test_student->save();
+
+            $name2 = "Psychology 101";
+            $course_number = "PSY101";
+            $test_course = new Course($name2, $course_number);
+            $test_course->save();
+
+            $name3 = "Philosophy 101";
+            $course_number2 = "PHIL101";
+            $test_course2 = new Course($name3, $course_number2);
+            $test_course2->save();
+
+            //Act
+            $test_student->addCourse($test_course->getId());
+            $test_student->addCourse($test_course2->getId());
+
+            //Assert
+            $result = $test_student->getCourses();
+            $this->assertEquals([$test_course, $test_course2], $result);
+        }
 
     }
 

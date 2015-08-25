@@ -92,5 +92,47 @@
             $this->setDateOfEnrollment($new_date);
         }
 
+        //Find student
+        static function find($search_id)
+        {
+            $found_student = null;
+            $students = Student::getAll();
+            foreach($students as $student) {
+                $student_id = $student->getId();
+                if ($student_id == $search_id) {
+                    $found_student = $student;
+                }
+            }
+            return $found_student;
+        }
+
+        //Add course
+        function addCourse($course_id)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO students_courses (student_id, course_id)
+                VALUES ({$this->getId()}, {$course_id}) ");
+
+        }
+
+        //Get Courses
+        function getCourses()
+        {
+            $returned_courses = $GLOBALS['DB']->query(
+            "SELECT courses.* FROM students JOIN students_courses
+            ON (students.id = students_courses.students_id)
+            JOIN courses ON (students_courses.courses_id = courses.id)
+            WHERE students.id = {$this->getId()};");
+            $courses = array();
+            foreach($returned_courses as $course) {
+                $name = $course["name"];
+                $course_number = $course["course_number"];
+                $id = $course["id"];
+                $new_course = new Course($name, $course_number, $id);
+                array_push($courses, $new_course);
+            }
+            return $courses;
+        }
+        
+
     }
 ?>
