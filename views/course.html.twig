@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>University Registrar</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <style>
+        .due{
+            color : red;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>{{ course.getName }}</h1>
+
+            {% if students is not empty %}
+                <h4>List of students:</h4>
+                    {% for student in students %}
+                        <p><strong>{{ student.getName }}<strong></p>
+                        <ul><li class="due">{{ student.getDateOfEnrollment }}</li></ul>
+                        <br>
+                    {% endfor %}
+            {% endif %}
+
+            <h4>Add a student</h4>
+
+            <form action='/students' method='post'>
+                <input id="course_id" name="course_id" type="hidden" value="{{ course.getId }}">
+                <label for="student_id">Select a Student</label>
+                <select id='student_id' name='student_id' type='text'>
+                    {% for student in all_students %}
+                        <option value="{{ student.getId }}"> {{ student.getName }} </option>
+                    {% endfor %}
+                </select>
+
+                <button type='submit' class="btn btn-success">Add Student</button>
+            </form>
+
+            <p><a href="/courses/{{ course.getId }}/edit">Edit this Course</a></p>
+
+            <form action='/delete_course/{id}' method='post'>
+                <input name="_method" type="hidden" value="delete">
+                <input id="course_id" name="course_id" type="hidden" value="{{ course.getId }}">
+                <button type='submit' class="btn btn-danger">Clear Course</button>
+            </form>
+
+
+            <p><a class="btn btn-primary" href='/'>Home</a></p>
+        </div>
+</body>
+</html>

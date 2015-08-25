@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>University Registrar</title>
+</head>
+<body>
+    <h1>Courses</h1>
+
+    {% if courses is not empty %}
+        <p>Here are all your courses:</p>
+        <ul>
+            {% for course in courses %}
+                <li><a href="/courses/{{ course.getId }}">{{ course.getName }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form action='/courses' method='post'>
+        <label for='name'>Course Name</label>
+        <input id='name' name='name' type='text'>
+
+        <label for='course_number'>Course Number</label>
+        <input id='course_number' name='course_number' type='text'>
+
+        <button type='submit'>Add Course</button>
+    </form>
+    <form action='/delete_courses' method='post'>
+        <button type='submit'>Clear Courses</button>
+    </form>
+
+    <p><a href='/'>Home</a></p>
+</body>
+</html>

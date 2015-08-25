@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>University Registrar</title>
+</head>
+<body>
+    <h1>{{ course.getName }}</h1>
+
+    <form action="/edit_course/{id}" method="post">
+        <input name="_method" type="hidden" value="patch">
+        <input id="course_id" name="course_id" type="hidden" value="{{ course.getId }}">
+
+        <label for="name">Course name</label>
+        <input id="name" name="name" type="text">
+
+        <label for="course_number">Course Number</label>
+        <input id="course_number" name="course_number" type="text">
+
+        <button type="submit">Edit Course</button>
+    </form>
+
+
+    <p><a href="/">Home</a></p>
+</body>
+</html>
