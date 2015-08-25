@@ -74,5 +74,23 @@
             $GLOBALS['DB']->exec("DELETE FROM students");
         }
 
+        //Update student name
+        function updateName($new_name)
+        {
+            $GLOBALS['DB']->exec("UPDATE students SET name = '{$new_name}'
+                WHERE id = {$this->getId()}");
+
+            $this->setName($new_name);
+        }
+
+        //Update student enrollment date
+        function updateDateOfEnrollment($new_date)
+        {
+            $GLOBALS['DB']->exec("UPDATE students SET date_of_enrollment = {$new_date}
+                WHERE id = {$this->getId()}");
+
+            $this->setDateOfEnrollment($new_date);
+        }
+
     }
 ?>
