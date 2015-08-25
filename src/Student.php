@@ -4,15 +4,15 @@
     {
         //Properties
         private $name;
-        private $id;
         private $date_of_enrollment;
+        private $id;
 
         //Constructor
         function __construct($name, $date_of_enrollment, $id = null)
         {
             $this->name = $name;
-            $this->id = $id;
             $this->date_of_enrollment = $date_of_enrollment;
+            $this->id = $id;
         }
 
         //Name setter and getter
@@ -27,7 +27,7 @@
         }
 
         //id getter
-        function getid()
+        function getId()
         {
             return $this->id;
         }
@@ -110,7 +110,7 @@
         function addCourse($course_id)
         {
             $GLOBALS['DB']->exec("INSERT INTO students_courses (student_id, course_id)
-                VALUES ({$this->getId()}, {$course_id}) ");
+                VALUES ({$this->getId()}, {$course_id})");
 
         }
 
@@ -123,6 +123,7 @@
             ON (students.id = students_courses.student_id)
             JOIN courses ON (students_courses.course_id = courses.id)
             WHERE students.id = {$this->getId()};");
+
             $courses = array();
             foreach($returned_courses as $course) {
                 $name = $course["name"];

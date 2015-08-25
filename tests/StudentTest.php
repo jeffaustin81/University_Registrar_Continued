@@ -227,7 +227,7 @@
             $this->assertEquals([$test_course], $result);
         }
 
-        function test_getCourse()
+        function test_getCourses()
         {
             //Arrange
             $name = "bob";

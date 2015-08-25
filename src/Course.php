@@ -104,6 +104,35 @@
             }
             return $found_course;
         }
+
+        //Add Student
+        function addStudent($student_id)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO students_courses (student_id, course_id)
+                VALUES ({$student_id}, {$this->getId()})");
+
+        }
+
+        //Get Students
+        function getStudents()
+        {
+            $returned_students = $GLOBALS['DB']->query(
+            "SELECT students.*
+            FROM courses JOIN students_courses
+            ON (courses.id = students_courses.course_id)
+            JOIN students ON (students_courses.student_id = students.id)
+            WHERE courses.id = {$this->getId()};");
+
+            $students = array();
+            foreach($returned_students as $student) {
+                $name = $student["name"];
+                $date_of_enrollment = $student["date_of_enrollment"];
+                $id = $student["id"];
+                $new_student = new Student($name, $date_of_enrollment, $id);
+                array_push($students, $new_student);
+            }
+            return $students;
+        }
     }
 
 
