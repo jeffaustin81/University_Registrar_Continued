@@ -8,7 +8,7 @@
         private $date_of_enrollment;
 
         //Constructor
-        function __construct($name, $id = null, $date_of_enrollment)
+        function __construct($name, $date_of_enrollment, $id = null)
         {
             $this->name = $name;
             $this->id = $id;
@@ -41,6 +41,37 @@
         function setDateOfEnrollment($new_date)
         {
             $this->date_of_enrollment = $new_date;
+        }
+
+        //Save Method
+        function save()
+        {
+            $GLOBALS['DB']->exec("INSERT INTO
+                students (name, date_of_enrollment)
+                VALUES ('{$this->getName()}', '{$this->getDateOfEnrollment()}')");
+
+            $this->id = $GLOBALS['DB']->lastInsertId();
+        }
+
+        //Get all method
+        static function getAll()
+        {
+            $returned_students = $GLOBALS['DB']->query("SELECT * FROM students");
+            $students = array();
+            foreach($returned_students as $student) {
+                $name = $student["name"];
+                $date_of_enrollment = $student["date_of_enrollment"];
+                $id = $student["id"];
+                $new_student = new Student($name, $date_of_enrollment, $id);
+                array_push($students, $new_student);
+            }
+            return $students;
+        }
+
+        //Delete All
+        static function deleteAll()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM students");
         }
 
     }
